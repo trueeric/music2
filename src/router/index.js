@@ -6,18 +6,27 @@ import Manage from '@/views/Manage.vue'
 const routes=[
   {
     name:'home',
-    path:"/",
+    path:'/',
     component:Home,
   },
   {
     name:'about',
-    path:"/about",
+    path:'/about',
     component:About,
   },
   {
     name:'manage',
-    path:"/manage",
+    path:'/manage-music',
     component:Manage,
+  },
+  {
+    path:'/manage',
+    redirect:{name:'manage'},
+  },
+  {
+    // 出現找不到現存網址的內容，直接轉回首頁
+    path:'/:catchAll(.*)*',
+    redirect:{name:'home'},
   },
 ]
 
