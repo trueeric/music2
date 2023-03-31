@@ -38,7 +38,7 @@
               <a
               class="px-2 text-white"
               href="#"
-              @click.prevent="userStore.signOut"
+              @click.prevent="signOut"
               >Logout</a>
             </li>
           </template>
@@ -65,6 +65,15 @@ export default {
       console.log('toggle:',this.modalStore.isOpen)
       // console.log('use:', this.userStore.userLoggedIn)
     },
+    signOut(){
+      this.userStore.signOut()
+
+      // console.log(this.$route);
+      if(this.$route.meta.requireAuth){
+        // 按登出鈕後即轉回首頁，不可待在原有權限管制的頁面
+        this.$router.push({name:'home'})
+      }
+    }
 
   }
 }

@@ -20,6 +20,13 @@ const routes=[
     // alias:'/manage',
     path:'/manage-music',
     component:Manage,
+    beforeEnter:(to, from ,next)=>{
+      console.log('Manage Route Guard')
+      next()
+    },
+    meta:{
+      requiresAuth:true,
+    }
   },
   {
     path:'/manage',
@@ -36,6 +43,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   linkActiveClass:'text-yellow-500',
+})
+
+router.beforeEach((to, from, next)=>{
+  console.log('Global Guard');
+  console.log(to,from);
+  next()
 })
 
 export default router
