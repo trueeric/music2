@@ -178,20 +178,20 @@
 </template>
 
 <script>
-import useUserStore from '@/stores/user'
+// import useUserStore from '@/stores/user'
 
 export default{
   name:'manage',
-  beforeRouteEnter(to, from, next){
-    const store=useUserStore()
-    console.log('beforeRouteEnter Guard');
+  // beforeRouteEnter(to, from, next){
+  //   const store=useUserStore()
+  //   console.log('beforeRouteEnter Guard');
 
-    // 沒登入，轉回首頁
-    if(store.userLoggedIn){
-      next()
-    }else{
-      next({name:'home'})
-    }
-  }
+  //   // 沒登入，轉回首頁
+  //   if(store.userLoggedIn){
+  //     next()
+  //   }else{
+  //     next({name:'home'})
+  //   }
+  // }
 }
 </script>

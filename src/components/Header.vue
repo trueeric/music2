@@ -69,7 +69,7 @@ export default {
       this.userStore.signOut()
 
       // console.log(this.$route);
-      if(this.$route.meta.requireAuth){
+      if(this.$route.meta.requiresAuth){
         // 按登出鈕後即轉回首頁，不可待在原有權限管制的頁面
         this.$router.push({name:'home'})
       }
