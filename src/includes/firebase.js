@@ -2,6 +2,8 @@ import firebase from "firebase/app"
 import "firebase/auth"
 // import 'firebase/database' 這個是realtime舊資料庫的用法
 import "firebase/firestore"
+//存file
+import 'firebase/storage'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,11 +19,15 @@ firebase.initializeApp(firebaseConfig)
 
 const auth=firebase.auth()
 const db=firebase.firestore()
+const storage=firebase.storage()
 
 const usersCollection=db.collection('users')
+const songsCollection=db.collection('songs')
 
 export{
   auth,
   db,
   usersCollection,
+  songsCollection,
+  storage,
 }
