@@ -19,6 +19,8 @@
       >
         <h5>Drop your files here</h5>
       </div>
+      <!-- 為不支援 drag and drop 功能的瀏覽器使用 -->
+      <input type="file" multiple @change="upload($event)" />
       <hr class="my-6" />
       <!-- Progress Bars -->
       <div class="mb-4" v-for="upload in uploads" key="upload.name">
@@ -52,8 +54,10 @@ export default {
   methods: {
     upload($event) {
       this.is_dragover = false
+      console.log($event)
       // 把object 變成 array以利firebase 接收,並利用 ... 展開語法
-      const files = [...$event.dataTransfer.files]
+      // 有dataTransfer是用拖放的，沒有的話是用點按鈕用選的
+      const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
 
       // 限制傳檔類別 audio/mpeg 注意 files 與  file的區別
       files.forEach((file) => {
