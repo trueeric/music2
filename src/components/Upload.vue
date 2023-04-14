@@ -51,6 +51,7 @@ export default {
       uploads: []
     }
   },
+  props: ['addSong'],
   methods: {
     upload($event) {
       this.is_dragover = false
@@ -103,7 +104,13 @@ export default {
             }
 
             song.url = await task.snapshot.ref.getDownloadURL()
-            await songsCollection.add(song)
+            // 在storage建立實體mp3檔
+            const songRef = await songsCollection.add(song)
+            // 建立一個snapshot把資料撈出來
+            const songSnapshot = await songRef.get()
+
+            // 引入父元件，更新songs陣列的顯示
+            this.addSong(songSnapshot)
 
             // 改變傳送無誤時的相關圖文樣式
             this.uploads[uploadIndex].variant = 'bg-green-400'

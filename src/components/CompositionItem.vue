@@ -31,6 +31,7 @@
             name="modified_name"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
             placeholder="Enter Song Title"
+            @input="updateUnsavedFlag(true)"
           />
           <ErrorMessage class="text-red-600" name="modified_name" />
         </div>
@@ -41,6 +42,7 @@
             name="genre"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
             placeholder="Enter Genre"
+            @input="updateUnsavedFlag(true)"
           />
           <ErrorMessage class="text-red-600" name="genre" />
         </div>
@@ -85,6 +87,9 @@ export default {
     removeSong: {
       type: Function,
       required: true
+    },
+    updateUnsavedFlag: {
+      type: Function
     }
   },
   data() {
@@ -109,7 +114,6 @@ export default {
 
       try {
         await songsCollection.doc(this.song.docID).update(values)
-        console.log('test edit await')
       } catch (error) {
         this.in_submission = false
         this.alert_variant = 'bg-red-500'
@@ -118,6 +122,8 @@ export default {
       }
       // 從子元件CompositionItem.vue的method 中調用updateSong function進行實際更新資料
       this.updateSong(this.index, values)
+      // 顯示已存
+      this.updateUnsavedFlag(false)
 
       this.in_submission = false
       this.alert_variant = 'bg-green-500'
