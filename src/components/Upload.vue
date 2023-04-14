@@ -96,7 +96,7 @@ export default {
             const song = {
               uid: auth.currentUser.uid,
               display_name: auth.currentUser.displayName,
-              orginal_name: task.snapshot.ref.name,
+              original_name: task.snapshot.ref.name,
               modified_name: task.snapshot.ref.name,
               genre: '',
               comment_count: 0
