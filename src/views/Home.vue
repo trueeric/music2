@@ -49,18 +49,64 @@ export default {
   },
   data() {
     return {
-      songs: []
+      songs: [],
+      maxPerPage: 10,
+      paddingRequest: false
     }
   },
   async created() {
-    const snapshots = await songsCollection.get()
+    this.getSongs()
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  // 離開前需unmount event listener 以釋出佔用的記憶體
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
 
-    snapshots.forEach((document) => {
-      this.songs.push({
-        docID: document.id,
-        ...document.data()
+  methods: {
+    handleScroll() {
+      const { scrollTop, offsetHeight } = document.documentElement
+      const { innerHeight } = window
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+      if (bottomOfWindow) {
+        // console.log('Bottom of window')
+        this.getSongs()
+      }
+    },
+    async getSongs() {
+      // 避免multi request
+      if (this.paddingRequest) {
+        return
+      }
+      this.paddingRequest = true
+
+      let snapshots
+
+      if (this.songs.length) {
+        const lastDoc = await songsCollection.doc(this.songs[this.songs.length - 1].docID).get()
+
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .startAfter(lastDoc)
+          .limit(this.maxPerPage)
+          .get()
+      } else {
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          // .startAfter(lastDoc)
+          .limit(this.maxPerPage)
+          .get()
+      }
+      // console.log(snapshots)
+
+      snapshots.forEach((document) => {
+        this.songs.push({
+          docID: document.id,
+          ...document.data()
+        })
       })
-    })
+      this.paddingRequest = false
+    }
   }
 }
 </script>
