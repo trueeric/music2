@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import About from "@/views/About.vue"
 import Manage from '@/views/Manage.vue'
+import Song from '@/views/Song.vue'
 import useUserStore from "@/stores/user"
 
 const routes=[
@@ -17,12 +18,12 @@ const routes=[
   },
   {
     name:'manage',
-    // // 用alias 取代下方的redirect
+    // 用alias 取代下方的redirect
     // alias:'/manage',
     path:'/manage-music',
     component:Manage,
     beforeEnter:(to, from ,next)=>{
-      console.log('Manage Route Guard')
+      // console.log('Manage Route Guard')
       next()
     },
     meta:{
@@ -32,6 +33,11 @@ const routes=[
   {
     path:'/manage',
     redirect:{name:'manage'},
+  },
+  {
+    name:'song',
+    path:'/song/:id',
+    component:Song
   },
   {
     // 出現找不到現存網址的內容，直接轉回首頁
