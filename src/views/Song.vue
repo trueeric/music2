@@ -9,6 +9,7 @@
       <div class="container mx-auto flex items-center">
         <!-- Play/Pause Button -->
         <button
+          @click.prevent="newSong(song)"
           type="button"
           class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
@@ -26,7 +27,7 @@
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
           <!-- Comment Count -->
-          <span class="card-title">Comments (15)</span>
+          <span class="card-title">Comments ({{ song.comment_count }})</span>
           <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
         </div>
         <div class="p-6">
@@ -85,8 +86,9 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
-import { mapState } from 'pinia'
-import userStore from '@/stores/user'
+import { mapState, mapActions } from 'pinia'
+import useUserStore from '@/stores/user'
+import usePlayStore from '@/stores/player'
 
 export default {
   name: 'Song',
@@ -106,7 +108,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(userStore, ['userLoggedIn']),
+    ...mapState(useUserStore, ['userLoggedIn']),
     sortedComments() {
       //用slice產生副本的陣列再排序，不影響原來的陣列
       return this.comments.slice().sort((a, b) => {
@@ -125,10 +127,15 @@ export default {
       this.$router.push({ name: 'home' })
       return
     }
+
+    const { sort } = this.$route.query
+    this.sort = sort === '1' || sort === '2' ? sort : '1'
+
     this.song = docSnapshot.data()
     this.getComments()
   },
   methods: {
+    ...mapActions(usePlayStore, ['newSong']),
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true
       this.comment_show_alert = true
@@ -144,6 +151,12 @@ export default {
       }
 
       await commentsCollection.add(comment)
+
+      this.song.comment_count += 1
+      await songsCollection.doc(this.$route.params.id).update({
+        comment_count: this.song.comment_count
+      })
+
       // 新增一筆comment後重新撈一次comment
       this.getComments()
 
@@ -155,7 +168,7 @@ export default {
     },
     async getComments() {
       const snapshots = await commentsCollection.where('sid', '==', this.$route.params.id).get()
-      console.log('param_id:', this.$route.params.id)
+      // console.log('param_id:', this.$route.params.id)
       this.comments = []
 
       snapshots.forEach((doc) => {
@@ -163,6 +176,18 @@ export default {
           docID: doc.id,
           ...doc.data()
         })
+      })
+    }
+  },
+  watch: {
+    sort(newVal) {
+      if (newVal === this.$route.query.sort) {
+        return
+      }
+      this.$router.push({
+        query: {
+          sort: newVal
+        }
       })
     }
   }
