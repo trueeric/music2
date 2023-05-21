@@ -7,10 +7,16 @@ export default defineStore("player",{
     current_song:{},
     sound:{},
     seek:"00:00",
-    duration:"00:00"
+    duration:"00:00",
+    playProgress:"0%"
   }),
   actions:{
     async newSong(song){
+      // 按一次只建一個播放實體，同曲同時僅能播一次。再按則把舊實體解除
+      if(this.sound instanceof Howl){
+        this.sound.unload()
+      }
+
       this.current_song=song
       this.sound=new Howl({
         src:[song.url],
@@ -40,6 +46,8 @@ export default defineStore("player",{
     progress(){
       this.seek=helper.formatTime(this.sound.seek())
       this.duration=helper.formatTime(this.sound.duration())
+
+      this.playProgress=`${(this.sound.seek() / this.sound.duration()) * 100 }%`
 
       if(this.sound.playing()){
         requestAnimationFrame(this.progress)
