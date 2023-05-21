@@ -52,6 +52,23 @@ export default defineStore("player",{
       if(this.sound.playing()){
         requestAnimationFrame(this.progress)
       }
+    },
+    updateSeek(){
+      // 確認有無播放
+      if(!this.sound.playing){
+        return
+      }
+      // 確認播放指標於進度條的位置,為免因像素不同(絕對位置)而進度指標與實際數值不符，改用進度distance(從左起相對位置)來算
+      const { x, width } = event.currentTarget.getBoundingClientRect() // 播放相關物件的property 播放點離播放左邊界距離 X , 進度條長度 width
+
+      // console.log(event.currentTarget.getBoundingClientRect());
+
+      const clickX = event.clientX - x
+      const percentage=clickX / width
+      const seconds=this.sound.duration() * percentage
+
+      this.sound.seek(seconds)
+      this.sound.once("seek", this.progress)  // 會先𣊅停，放棄實體，重建實體，重抓播放新位置再播
     }
 
   },
