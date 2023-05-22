@@ -13,7 +13,7 @@
           type="button"
           class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
-          <i class="fas fa-play"></i>
+          <i class="fas" :class="{ 'fa-pause': playing, 'fa-play': !playing }"></i>
         </button>
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
@@ -88,7 +88,7 @@
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
 import { mapState, mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
-import usePlayStore from '@/stores/player'
+import usePlayerStore from '@/stores/player'
 
 export default {
   name: 'Song',
@@ -109,6 +109,7 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ['userLoggedIn']),
+    ...mapState(usePlayerStore, ['playing']),
     sortedComments() {
       //用slice產生副本的陣列再排序，不影響原來的陣列
       return this.comments.slice().sort((a, b) => {
@@ -135,7 +136,7 @@ export default {
     this.getComments()
   },
   methods: {
-    ...mapActions(usePlayStore, ['newSong']),
+    ...mapActions(usePlayerStore, ['newSong', 'toggleAudio']),
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true
       this.comment_show_alert = true
