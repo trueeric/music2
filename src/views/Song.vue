@@ -1,19 +1,20 @@
 <template>
-  <div>
+  <main>
     <!-- Music Header -->
     <section class="w-full mb-8 py-14 text-center text-white relative">
       <div
         class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
         style="background-image: url(/assets/img/song-header.png)"
-      ></div>
+      >
+      </div>
       <div class="container mx-auto flex items-center">
         <!-- Play/Pause Button -->
         <button
-          @click.prevent="newSong(song)"
-          type="button"
-          class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        @click.prevent="newSong(song)"
+        type="button"
+        class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
-          <i class="fas" :class="{ 'fa-pause': playing, 'fa-play': !playing }"></i>
+        <i class="fas" :class="{ 'fa-pause': playing, 'fa-play': !playing }"></i>
         </button>
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
@@ -22,6 +23,7 @@
         </div>
       </div>
     </section>
+
     <!-- Form -->
     <section class="container mx-auto mt-6" id="comments">
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -49,7 +51,7 @@
             <button
               type="submit"
               class="py-1.5 px-3 rounded text-white bg-green-600 block"
-              :disable="comment_in_submission"
+              :disabled="comment_in_submission"
             >
               Submit
             </button>
@@ -65,6 +67,7 @@
         </div>
       </div>
     </section>
+
     <!-- Comments -->
     <ul class="container mx-auto">
       <li
@@ -81,7 +84,8 @@
         <p>{{ comment.content }}</p>
       </li>
     </ul>
-  </div>
+
+  </main>
 </template>
 
 <script>
