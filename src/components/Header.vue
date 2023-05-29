@@ -11,8 +11,8 @@
       </router-link>
 
       <div class="flex flex-grow items-center">
+        <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
-          <!-- Primary Navigation -->
           <li>
             <router-link class="px-2 text-white" :to="{ name: 'about' }">About</router-link>
           </li>
@@ -31,6 +31,13 @@
             </li>
           </template>
         </ul>
+        <ul class="ml-auto">
+          <li>
+            <a class="px-2 text-white" href="#" @click.prevent="changeLocale">
+              {{ currentLocale }}
+            </a>
+          </li>
+        </ul>
       </div>
     </nav>
   </header>
@@ -44,7 +51,10 @@ import useUserStore from '@/stores/user'
 export default {
   name: 'AppHeader',
   computed: {
-    ...mapStores(useModalStore, useUserStore)
+    ...mapStores(useModalStore, useUserStore),
+    currentLocale() {
+      return this.$i18n.locale === 'zh' ? 'Chinese' : 'English'
+    }
   },
   methods: {
     toggleAuthModal() {
@@ -60,6 +70,9 @@ export default {
         // 按登出鈕後即轉回首頁，不可待在原有權限管制的頁面
         this.$router.push({ name: 'home' })
       }
+    },
+    changeLocale() {
+      this.$i18n.locale = this.$i18n.locale === 'zh' ? 'en' : 'zh'
     }
   }
 }

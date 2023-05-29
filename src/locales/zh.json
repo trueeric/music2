@@ -1,0 +1,11 @@
+{
+  "home":{
+    "listen":"來聽很棒的音樂!"
+  },
+  "song":{
+    "comment_count":"無評論 | 1 則評論 |{count} 則評論"
+  },
+  "manage":{
+    "my_songs":"我的歌單"
+  }
+}
