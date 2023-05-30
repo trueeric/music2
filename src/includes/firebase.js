@@ -5,6 +5,12 @@ import "firebase/firestore"
 //存file
 import 'firebase/storage'
 
+
+// firebase cache
+db.enablePersistence().catch((error)=>{
+  console.log(`Firebase persistence error ${error.code}`);
+})
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCPfcvTP7i56WK5b4NhFx1X1llr5t0s_Ik",

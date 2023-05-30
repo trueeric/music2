@@ -7,9 +7,12 @@ import VeeValidatePlugin from './includes/validation'
 import {auth} from './includes/firebase'
 import Icon from "./directives/icon"
 import i18n from './includes/i18n'
+// import { RegisterSW } from 'virtual:pwa-register'
 
 import './assets/base.css'
 import './assets/main.css'
+
+// RegisterSW({immediate:true})
 
 let app
 
