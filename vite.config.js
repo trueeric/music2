@@ -9,8 +9,23 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      strategies: 'generateSW',
-      injectRegister: 'auto',
+      registerType:"autoUpdate",
+      devOptions:{
+        enabled:true
+      },
+      manifest:{
+        name:"Music App",
+        theme_color:"#ff5e3a",
+        icons:[
+          {
+            src:"assets/img/pwa-192x192.png",
+            sizes:"192x192",
+            type:"image/png"
+          }
+        ]
+      },
+      // strategies: 'generateSW',
+      // injectRegister: 'auto',
       workbox:{
         globPatterns:["**/*.{js,css,html,png,jpg,}"]
       }
